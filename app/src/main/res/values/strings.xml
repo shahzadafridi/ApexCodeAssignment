@@ -13,5 +13,10 @@
     <string name="location_result_miles">[%f] miles</string>
     <string name="undefined_error_message">Please, try again with another input. If the error appears again, please, contact support.</string>
     <string name="connection_error_message">Please, check your connection or try again later</string>
+    <string name="btn_title_show_user_list">Show 10 users</string>
+    <string name="btn_title_refresh_random_user">Refresh random user</string>
+    <string name="email_label">Email:</string>
+    <string name="name_label">Name:</string>
+    <string name="main_image_content_desc">User Image</string>
 
 </resources>
