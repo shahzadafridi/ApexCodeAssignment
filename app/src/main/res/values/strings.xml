@@ -11,4 +11,7 @@
     <string name="location_random_user">Location of random user: (%1$s, %2$s)</string>
     <string name="location_phone">Location of this phone: (%1$s, %2$s)</string>
     <string name="location_result_miles">[%f] miles</string>
+    <string name="undefined_error_message">Please, try again with another input. If the error appears again, please, contact support.</string>
+    <string name="connection_error_message">Please, check your connection or try again later</string>
+
 </resources>
