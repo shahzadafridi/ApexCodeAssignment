@@ -3,12 +3,17 @@ package com.apex.codeassesment.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.apex.codeassesment.data.local.PreferencesManager
+import com.apex.codeassesment.util.resource.ResourceManager
+import com.apex.codeassesment.util.resource.ResourceManagerImpl
 import dagger.Module
 import dagger.Provides
 
 @Module
 object MainModule {
-
+  @Provides
+  fun provideResourceManager(context: Context): ResourceManager {
+    return ResourceManagerImpl(context)
+  }
   @Provides
   fun provideSharedPreferences(context: Context): SharedPreferences {
     return context.getSharedPreferences("random-user-preferences", Context.MODE_PRIVATE)
