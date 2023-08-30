@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.apex.codeassesment.R;
-import com.apex.codeassesment.data.model.Coordinates;
-import com.apex.codeassesment.data.model.Name;
-import com.apex.codeassesment.data.model.User;
+import com.apex.codeassesment.data.model.user.Coordinates;
+import com.apex.codeassesment.data.model.user.Name;
+import com.apex.codeassesment.data.model.user.User;
 import com.apex.codeassesment.databinding.ActivityDetailsBinding;
 import com.apex.codeassesment.ui.location.LocationActivity;
 

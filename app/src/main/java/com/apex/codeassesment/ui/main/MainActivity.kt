@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.apex.codeassesment.R
-import com.apex.codeassesment.data.model.User
+import com.apex.codeassesment.data.model.user.User
 import com.apex.codeassesment.data.repository.UserRepository
 import com.apex.codeassesment.di.MainComponent
 import com.apex.codeassesment.ui.details.DetailsActivity

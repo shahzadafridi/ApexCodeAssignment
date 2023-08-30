@@ -16,7 +16,7 @@ class HttpExceptionHandler(
         }
     }
 
-    fun transformException(exception: Throwable): BaseException {
+    private fun transformException(exception: Throwable): BaseException {
         return when (exception) {
             is HttpException -> {
                 val response = exception.response()!!

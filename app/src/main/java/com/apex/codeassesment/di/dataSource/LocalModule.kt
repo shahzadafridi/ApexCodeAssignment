@@ -1,15 +1,20 @@
 package com.apex.codeassesment.di.dataSource
 
 import com.apex.codeassesment.data.local.PreferencesManager
-import com.apex.codeassesment.data.local.localdatasource
+import com.apex.codeassesment.data.local.LocalDataSource
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 object LocalModule {
 
     @Provides
-    fun provideLocalDataSource(preferencesManager: PreferencesManager): localdatasource = localdatasource(preferencesManager)
+    fun provideLocalDataSource(preferencesManager: PreferencesManager, gson: Gson): LocalDataSource{
+        return LocalDataSource(
+            preferencesManager = preferencesManager,
+            gson = gson
+        )
+    }
 
 }

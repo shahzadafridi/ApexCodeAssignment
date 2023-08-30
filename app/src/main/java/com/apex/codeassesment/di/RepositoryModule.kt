@@ -1,20 +1,21 @@
 package com.apex.codeassesment.di
 
 import com.apex.codeassesment.data.UserRepositoryImp
-import com.apex.codeassesment.data.local.localdatasource
+import com.apex.codeassesment.data.local.LocalDataSource
 import com.apex.codeassesment.data.remote.RemoteDataSource
 import com.apex.codeassesment.data.repository.UserRepository
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 object RepositoryModule {
 
     @Provides
     fun provideUserRepository(
-        localDataSource: localdatasource,
-        remoteDataSource: RemoteDataSource
+        localDataSource: LocalDataSource,
+        remoteDataSource: RemoteDataSource,
+        gson: Gson
     ): UserRepository {
         return UserRepositoryImp(
             localDataSource = localDataSource,
