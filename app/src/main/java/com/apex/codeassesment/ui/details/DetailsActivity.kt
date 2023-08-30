@@ -1,46 +1,49 @@
-package com.apex.codeassesment.ui.details;
+package com.apex.codeassesment.ui.details
 
-import android.content.Intent;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import com.apex.codeassesment.R;
-import com.apex.codeassesment.data.model.user.Coordinates;
-import com.apex.codeassesment.data.model.user.Name;
-import com.apex.codeassesment.data.model.user.User;
-import com.apex.codeassesment.databinding.ActivityDetailsBinding;
-import com.apex.codeassesment.ui.location.LocationActivity;
+import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.apex.codeassesment.R
+import com.apex.codeassesment.databinding.ActivityDetailsBinding
+import com.apex.codeassesment.model.user.User
+import com.apex.codeassesment.ui.location.LocationActivity
+import com.apex.codeassesment.util.ex.load
+import com.apex.codeassesment.util.ex.navigate
+import com.apex.codeassesment.util.ex.parcelable
 
 // TODO (3 points): Convert to Kotlin
 // TODO (3 points): Remove bugs or crashes if any
 // TODO (1 point): Add content description to images
 // TODO (2 points): Add tests
-public class DetailsActivity extends AppCompatActivity {
+class DetailsActivity : AppCompatActivity() {
 
-  @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    final ActivityDetailsBinding binding = ActivityDetailsBinding.inflate(getLayoutInflater());
-    setContentView(binding.getRoot());
+    lateinit var binding: ActivityDetailsBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val userObj: User? = parcelable("saved-user-key",true)
 
-    final User user = getIntent().getParcelableExtra("saved-user-key");
-
-    // TODO (1 point): Use Glide to load images
-//    binding.detailsImage = user.getPicture().getLarge();
-    final Name name = user.getName();
-    binding.detailsName.setText(getString(R.string.details_name, name.getFirst(), name.getLast()));
-    binding.detailsEmail.setText(getString(R.string.details_email, user.getGender()));
-    binding.detailsAge.setText(user.getDob().getAge());
-    final Coordinates coordinates = user.getLocation().getCoordinates();
-    binding.detailsLocation.setText(getString(R.string.details_location, coordinates.getLatitude(), coordinates.getLongitude()));
-    binding.detailsLocationButton.setOnClickListener((x) -> navigateLocation(coordinates));
-  }
-
-  private void navigateLocation(@NonNull final Coordinates coordinates) {
-    final Intent intent = new Intent(this, LocationActivity.class)
-      .putExtra("user-latitude-key", coordinates.getLatitude())
-      .putExtra("user-longitude-key", coordinates.getLongitude());
-    startActivity(intent);
-  }
+        // TODO (1 point): Use Glide to load images
+        userObj?.let { user ->
+            binding.detailsImage.load(user.picture.large)
+            binding.detailsName.text = getString(R.string.details_name, user.name.first, user.name.last)
+            binding.detailsEmail.text = getString(R.string.details_email, user.gender)
+            binding.detailsAge.setText(user.dob.age)
+            val coordinates = user.location.coordinates
+            binding.detailsLocation.text = getString(
+                R.string.details_location,
+                coordinates.latitude,
+                coordinates.longitude
+            )
+            binding.detailsLocationButton.setOnClickListener { x: View? ->
+                navigate<LocationActivity>(
+                    bundle = Bundle().apply {
+                        putString("user-latitude-key", coordinates.latitude)
+                        putString("user-longitude-key", coordinates.longitude)
+                    }
+                )
+            }
+        }
+    }
 }

@@ -1,13 +1,17 @@
 package com.apex.codeassesment.data.repository
 
-import com.apex.codeassesment.data.model.user.User
+import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
+import com.apex.codeassesment.util.DataState
+
 
 interface UserRepository {
 
-    fun getSavedUser(): User
+    fun getSavedUser(): UserResponseDTO
 
-    suspend fun getUser(forceUpdate: Boolean): User
+    fun saveUser(userResponseDTO: UserResponseDTO)
 
-    suspend fun getUsers(results: Int): List<User>
+    suspend fun getUser(): DataState<UserResponseDTO>
+
+    suspend fun getUsers(results: Int): DataState<UserResponseDTO>
 
 }

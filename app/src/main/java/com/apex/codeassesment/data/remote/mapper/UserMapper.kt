@@ -2,49 +2,28 @@ package com.apex.codeassesment.data.remote.mapper
 
 import com.apex.codeassesment.data.remote.dto.user.DobDTO
 import com.apex.codeassesment.data.remote.dto.user.IdDTO
-import com.apex.codeassesment.data.remote.dto.user.InfoDTO
 import com.apex.codeassesment.data.remote.dto.user.LocationDTO
 import com.apex.codeassesment.data.remote.dto.user.LoginDTO
 import com.apex.codeassesment.data.remote.dto.user.NameDTO
 import com.apex.codeassesment.data.remote.dto.user.PictureDTO
 import com.apex.codeassesment.data.remote.dto.user.RegisteredDTO
-import com.apex.codeassesment.data.remote.dto.user.ResultDTO
-import com.apex.codeassesment.data.remote.dto.user.UserDTO
+import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
 import com.apex.codeassesment.model.user.Coordinates
 import com.apex.codeassesment.model.user.Dob
 import com.apex.codeassesment.model.user.Id
-import com.apex.codeassesment.model.user.Info
 import com.apex.codeassesment.model.user.Location
 import com.apex.codeassesment.model.user.Login
 import com.apex.codeassesment.model.user.Name
 import com.apex.codeassesment.model.user.Picture
 import com.apex.codeassesment.model.user.Registered
-import com.apex.codeassesment.model.user.Result
+import com.apex.codeassesment.model.user.User
 import com.apex.codeassesment.model.user.Street
 import com.apex.codeassesment.model.user.Timezone
-import com.apex.codeassesment.model.user.User
 
 object UserMapper {
-
-    fun toUser(dto: UserDTO): User {
-        return User(
-            info = toInfo(dto.infoDto),
-            results = toResults(dto.resultDto)
-        )
-    }
-
-    private fun toInfo(dto: InfoDTO): Info {
-        return Info(
-            page = dto.page,
-            results = dto.results,
-            seed = dto.seed,
-            version = dto.version
-        )
-    }
-
-    private fun toResults(dto: List<ResultDTO>): List<Result> {
-        return dto.map {
-            Result(
+    fun toUser(dto: UserResponseDTO): List<User> {
+        return dto.userDto.map {
+            User(
                 cell = it.cell,
                 dob = toDob(it.dobDTO),
                 email = it.email,
@@ -64,7 +43,7 @@ object UserMapper {
     private fun toID(dto: IdDTO): Id {
         return Id(
             name = dto.name,
-            value = dto.value
+            value = dto.value.toString()
         )
     }
 

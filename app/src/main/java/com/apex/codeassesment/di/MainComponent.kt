@@ -7,17 +7,26 @@ import com.apex.codeassesment.ui.main.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [MainModule::class, RepositoryModule::class, LocalModule::class, NetworkModule::class])
+@Component(
+    modules = [
+        MainModule::class,
+        RepositoryModule::class,
+        LocalModule::class,
+        NetworkModule::class,
+        ViewModelModule::class,
+        ViewModelFactoryModule::class
+    ]
+)
 interface MainComponent {
 
-  @Component.Factory
-  interface Factory {
-    fun create(@BindsInstance applicationContext: Context): MainComponent
-  }
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance applicationContext: Context): MainComponent
+    }
 
-  interface Injector {
-    val mainComponent: MainComponent
-  }
+    interface Injector {
+        val mainComponent: MainComponent
+    }
 
-  fun inject(mainActivity: MainActivity)
+    fun inject(mainActivity: MainActivity)
 }

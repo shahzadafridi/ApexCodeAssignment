@@ -1,6 +1,7 @@
 package com.apex.codeassesment.util.error
 
 import com.apex.codeassesment.R
+import com.apex.codeassesment.util.DataState
 import com.apex.codeassesment.util.resource.ResourceManager
 import retrofit2.HttpException
 import java.io.IOException
@@ -8,11 +9,12 @@ import java.io.IOException
 class HttpExceptionHandler(
     private val resourceManager: ResourceManager
 ) {
-    suspend fun <T> wrap(block: suspend () -> T): T {
+    suspend fun <T> wrap(block: suspend () -> T): DataState<T> {
         return try {
-            block()
+            val data = block()
+            DataState.Success(data)
         } catch (e: Throwable) {
-            throw transformException(e)
+            DataState.Error(transformException(e))
         }
     }
 

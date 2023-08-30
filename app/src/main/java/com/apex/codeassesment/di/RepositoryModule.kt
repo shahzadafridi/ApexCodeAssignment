@@ -14,8 +14,7 @@ object RepositoryModule {
     @Provides
     fun provideUserRepository(
         localDataSource: LocalDataSource,
-        remoteDataSource: RemoteDataSource,
-        gson: Gson
+        remoteDataSource: RemoteDataSource
     ): UserRepository {
         return UserRepositoryImp(
             localDataSource = localDataSource,

@@ -1,6 +1,6 @@
 package com.apex.codeassesment.data.local
 
-import com.apex.codeassesment.model.user.User
+import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
 import com.google.gson.Gson
 import javax.inject.Inject
 
@@ -13,14 +13,14 @@ class LocalDataSource @Inject constructor(
     private val gson: Gson
 ) {
 
-    fun loadUser(): User {
+    fun loadUser(): UserResponseDTO {
         val userJson = preferencesManager.loadUser()
-        val user = gson.fromJson(userJson,User::class.java)
-        return user
+        val userResponseDto = gson.fromJson(userJson,UserResponseDTO::class.java)
+        return userResponseDto
     }
 
-    fun saveUser(user: User) {
-        val userJson = gson.toJson(user)
+    fun saveUser(userResponseDto: UserResponseDTO) {
+        val userJson = gson.toJson(userResponseDto)
         preferencesManager.saveUser(userJson)
     }
 }

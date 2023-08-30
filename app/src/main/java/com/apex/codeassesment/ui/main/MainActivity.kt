@@ -1,15 +1,17 @@
 package com.apex.codeassesment.ui.main
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.apex.codeassesment.R
-import com.apex.codeassesment.data.model.user.User
-import com.apex.codeassesment.data.repository.UserRepository
+import com.apex.codeassesment.databinding.ActivityMainBinding
 import com.apex.codeassesment.di.MainComponent
+import com.apex.codeassesment.model.user.User
 import com.apex.codeassesment.ui.details.DetailsActivity
+import com.apex.codeassesment.util.UiState
+import com.apex.codeassesment.util.ex.load
+import com.apex.codeassesment.util.ex.navigate
 import javax.inject.Inject
 
 // TODO (5 points): Move calls to repository to Presenter or ViewModel.
@@ -21,65 +23,79 @@ import javax.inject.Inject
 //  Jetpack Compose.
 class MainActivity : AppCompatActivity() {
 
-  // TODO (2 points): Convert to view binding
-  private var userImageView: ImageView? = null
-  private var userNameTextView: TextView? = null
-  private var userEmailTextView: TextView? = null
-  private var seeDetailsButton: Button? = null
-  private var refreshUserButton: Button? = null
-  private var showUserListButton: Button? = null
-  private var userListView: ListView? = null
+    // TODO (2 points): Convert to view binding
+    lateinit var binding: ActivityMainBinding
+    lateinit var adapter: ArrayAdapter<User>
 
-  @Inject lateinit var userRepository: UserRepository
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    val viewModel by lazy { ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java] }
 
-  private var randomUser: User = User()
-    set(value) {
-      // TODO (1 point): Use Glide to load images after getting the data from endpoints mentioned in RemoteDataSource
-      // userImageView.setImageBitmap(refreshedUser.image)
-      userNameTextView!!.text = value.name!!.first
-      userEmailTextView!!.text = value.email
-      field = value
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        (applicationContext as MainComponent.Injector).mainComponent.inject(this)
+
+        adapter = ArrayAdapter<User>(this, android.R.layout.simple_list_item_1)
+
+        binding.mainUserList.setOnItemClickListener { parent, _, position, _ ->
+            navigate<DetailsActivity>(
+                bundle = Bundle().apply {
+                    putParcelable("saved-user-key", parent.getItemAtPosition(position) as User)
+                }
+            )
+        }
+
+        binding.mainSeeDetailsButton.setOnClickListener {
+            viewModel.getUser()?.let {
+                navigate<DetailsActivity>(
+                    bundle = Bundle().apply {
+                        putParcelable("saved-user-key", it)
+                    }
+                )
+
+            }
+        }
+
+        binding.mainRefreshButton.setOnClickListener {
+            viewModel.getUser(true)
+        }
+
+        binding.mainUserList.setOnClickListener {
+            viewModel.getUsers()
+        }
     }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    sharedContext = this
+    fun observe() {
+        viewModel.user.observe(this) { uiState ->
+            when (uiState) {
+                is UiState.Loading -> {}
+                is UiState.Success -> {
+                  uiState.data?.let {
+                    // TODO (1 point): Use Glide to load images after getting the data from endpoints mentioned in RemoteDataSource
+                    binding.mainImage.load(it.picture.thumbnail)
+                    binding.mainName.text = getString(R.string.details_name,it.name.first,it.name.last)
+                    binding.mainEmail.text = it.email
+                  }
+                }
 
-    (applicationContext as MainComponent.Injector).mainComponent.inject(this)
+                is UiState.Error -> {}
+            }
+        }
+        viewModel.users.observe(this) { uiState ->
+            when (uiState) {
+                is UiState.Loading -> {}
+                is UiState.Success -> {
+                    adapter.clear()
+                    adapter.addAll(uiState.data)
+                }
 
-    val arrayAdapter = ArrayAdapter<User>(this, android.R.layout.simple_list_item_1)
-
-    userImageView = findViewById(R.id.main_image)
-    userNameTextView = findViewById(R.id.main_name)
-    userEmailTextView = findViewById(R.id.main_email)
-    seeDetailsButton = findViewById(R.id.main_see_details_button)
-    refreshUserButton = findViewById(R.id.main_refresh_button)
-    showUserListButton = findViewById(R.id.main_user_list_button)
-    userListView = findViewById(R.id.main_user_list)
-    userListView!!.adapter = arrayAdapter
-    userListView?.setOnItemClickListener { parent, _, position, _ -> navigateDetails(parent.getItemAtPosition(position) as User) }
-
-    randomUser = userRepository.getSavedUser()
-
-    seeDetailsButton!!.setOnClickListener { navigateDetails(randomUser) }
-
-    refreshUserButton!!.setOnClickListener { randomUser = userRepository.getUser(true) }
-
-    showUserListButton!!.setOnClickListener {
-      val users = userRepository.getUsers()
-      arrayAdapter.clear()
-      arrayAdapter.addAll(users)
+                is UiState.Error -> {}
+            }
+        }
     }
-  }
 
-  // TODO (2 points): Convert to extenstion function.
-  private fun navigateDetails(user: User) {
-    val putExtra = Intent(this, DetailsActivity::class.java).putExtra("saved-user-key", user)
-    startActivity(putExtra)
-  }
-
-  companion object {
-    var sharedContext: Context? = null
-  }
+    // TODO (2 points): Convert to extenstion function.
 }

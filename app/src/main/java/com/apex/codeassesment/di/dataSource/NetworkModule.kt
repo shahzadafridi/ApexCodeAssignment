@@ -26,9 +26,7 @@ object NetworkModule {
     fun provideJsonMapper() = Gson()
 
     @Provides
-    fun provideOkHttpClient(
-        context: Context
-    ): OkHttpClient {
+    fun provideOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
