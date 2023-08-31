@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="my_random_user">My random user</string>
     <string name="view_details">View details</string>
+    <string name="first_last_name">%1$s %2$s</string>
     <string name="details_name">Name: %1$s %2$s</string>
     <string name="details_email">Email: %s</string>
     <string name="details_location">Location: (%1$s, %2$s)</string>
@@ -17,6 +18,9 @@
     <string name="btn_title_refresh_random_user">Refresh random user</string>
     <string name="email_label">Email:</string>
     <string name="name_label">Name:</string>
-    <string name="main_image_content_desc">User Image</string>
+    <string name="main_image_content_desc">%s Image</string>
+    <string name="fetch_random_user">Refresh random user</string>
+    <string name="details_image_content_desc">It is a detail image of user</string>
+    <string name="item_image_content_desc">Item image</string>
 
 </resources>

@@ -19,7 +19,6 @@ import com.apex.codeassesment.util.ex.toast
 import javax.inject.Inject
 
 // TODO (3 points): Add tests for viewmodel or presenter.
-// TODO (1 point): Add content description to images
 // TODO (3 points): Add tests
 // TODO (Optional Bonus 10 points): Make a copy of this activity with different name and convert the current layout it is using in
 //  Jetpack Compose.
@@ -63,7 +62,8 @@ class MainActivity : AppCompatActivity() {
                         putParcelable("saved-user-key", it)
                     }
                 )
-
+            } ?: run {
+                toast(getString(R.string.fetch_random_user))
             }
         }
 
@@ -87,9 +87,11 @@ class MainActivity : AppCompatActivity() {
                 is UiState.Success -> {
                     binding.progressBar.hide()
                     uiState.data?.let {
-                        binding.mainImage.load(it.picture.thumbnail)
-                        binding.mainName.text =
-                            getString(R.string.details_name, it.name.first, it.name.last)
+                        binding.mainImage.apply {
+                            contentDescription = getString(R.string.main_image_content_desc,it.name)
+                            load(it.picture.thumbnail)
+                        }
+                        binding.mainName.text = getString(R.string.first_last_name, it.name.first, it.name.last)
                         binding.mainEmail.text = it.email
                     }
                 }

@@ -11,7 +11,6 @@ import com.apex.codeassesment.util.ex.load
 import com.apex.codeassesment.util.ex.navigate
 import com.apex.codeassesment.util.ex.parcelable
 
-// TODO (1 point): Add content description to images
 // TODO (2 points): Add tests
 class DetailsActivity : AppCompatActivity() {
 
@@ -23,10 +22,13 @@ class DetailsActivity : AppCompatActivity() {
         val userObj: User? = parcelable("saved-user-key",true)
 
         userObj?.let { user ->
-            binding.detailsImage.load(user.picture.large)
+            binding.detailsImage.apply {
+                contentDescription = getString(R.string.details_image_content_desc)
+                load(user.picture.large)
+            }
             binding.detailsName.text = getString(R.string.details_name, user.name.first, user.name.last)
             binding.detailsEmail.text = getString(R.string.details_email, user.gender)
-            binding.detailsAge.setText(user.dob.age)
+            binding.detailsAge.setText("${user.dob.age}")
             val coordinates = user.location.coordinates
             binding.detailsLocation.text = getString(
                 R.string.details_location,

@@ -11,7 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="#33aaaaaa"
-        android:contentDescription="@string/main_image_content_desc"
+        android:contentDescription="@string/item_image_content_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,6 +31,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:textAppearance="?textAppearanceBody2"
         app:layout_constraintBottom_toBottomOf="@+id/name_label"
         app:layout_constraintStart_toEndOf="@+id/name_label"
@@ -53,6 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?textAppearanceBody2"
+        android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/email_label"
         app:layout_constraintStart_toEndOf="@+id/email_label"
         app:layout_constraintTop_toTopOf="@+id/email_label"

@@ -34,8 +34,11 @@ class UserListAdapter(
     inner class MyViewHolder(private val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root)  {
 
         fun bind(item: User){
-            binding.image.load(item.picture.thumbnail)
-            binding.name.text = binding.root.context.getString(R.string.details_name,item.name.first,item.name.last)
+            binding.image.apply {
+                contentDescription = context.getString(R.string.item_image_content_desc)
+                load(item.picture.thumbnail)
+            }
+            binding.name.text = binding.root.context.getString(R.string.first_last_name,item.name.first,item.name.last)
             binding.mainEmail.text = item.email
             binding.detailsButton.setOnClickListener {
                 onItemClick.invoke(list[adapterPosition])
