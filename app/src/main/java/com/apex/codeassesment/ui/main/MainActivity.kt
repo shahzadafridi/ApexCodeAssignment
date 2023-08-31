@@ -4,18 +4,19 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.apex.codeassesment.R
 import com.apex.codeassesment.databinding.ActivityMainBinding
 import com.apex.codeassesment.di.MainComponent
 import com.apex.codeassesment.model.user.User
 import com.apex.codeassesment.ui.details.DetailsActivity
 import com.apex.codeassesment.util.UiState
+import com.apex.codeassesment.util.ex.hide
 import com.apex.codeassesment.util.ex.load
 import com.apex.codeassesment.util.ex.navigate
+import com.apex.codeassesment.util.ex.show
 import javax.inject.Inject
 
-// TODO (5 points): Move calls to repository to Presenter or ViewModel.
-// TODO (5 points): Use combination of sealed/Dataclasses for exposing the data required by the view from viewModel .
 // TODO (3 points): Add tests for viewmodel or presenter.
 // TODO (1 point): Add content description to images
 // TODO (3 points): Add tests
@@ -23,13 +24,23 @@ import javax.inject.Inject
 //  Jetpack Compose.
 class MainActivity : AppCompatActivity() {
 
-    // TODO (2 points): Convert to view binding
     lateinit var binding: ActivityMainBinding
-    lateinit var adapter: ArrayAdapter<User>
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     val viewModel by lazy { ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java] }
+    private val userAdapter: UserListAdapter by lazy {
+        UserListAdapter(
+            list = arrayListOf(),
+            onItemClick = { user ->
+                navigate<DetailsActivity>(
+                    bundle = Bundle().apply {
+                        putParcelable("saved-user-key", user)
+                    }
+                )
+            }
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,14 +49,10 @@ class MainActivity : AppCompatActivity() {
 
         (applicationContext as MainComponent.Injector).mainComponent.inject(this)
 
-        adapter = ArrayAdapter<User>(this, android.R.layout.simple_list_item_1)
-
-        binding.mainUserList.setOnItemClickListener { parent, _, position, _ ->
-            navigate<DetailsActivity>(
-                bundle = Bundle().apply {
-                    putParcelable("saved-user-key", parent.getItemAtPosition(position) as User)
-                }
-            )
+        binding.mainUserList.apply {
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+            adapter = userAdapter
         }
 
         binding.mainSeeDetailsButton.setOnClickListener {
@@ -71,31 +78,41 @@ class MainActivity : AppCompatActivity() {
     fun observe() {
         viewModel.user.observe(this) { uiState ->
             when (uiState) {
-                is UiState.Loading -> {}
-                is UiState.Success -> {
-                  uiState.data?.let {
-                    // TODO (1 point): Use Glide to load images after getting the data from endpoints mentioned in RemoteDataSource
-                    binding.mainImage.load(it.picture.thumbnail)
-                    binding.mainName.text = getString(R.string.details_name,it.name.first,it.name.last)
-                    binding.mainEmail.text = it.email
-                  }
+                is UiState.Loading -> {
+                    binding.progressBar.show()
                 }
 
-                is UiState.Error -> {}
+                is UiState.Success -> {
+                    binding.progressBar.hide()
+                    uiState.data?.let {
+                        binding.mainImage.load(it.picture.thumbnail)
+                        binding.mainName.text =
+                            getString(R.string.details_name, it.name.first, it.name.last)
+                        binding.mainEmail.text = it.email
+                    }
+                }
+
+                is UiState.Error -> {
+                    binding.progressBar.hide()
+                }
             }
         }
         viewModel.users.observe(this) { uiState ->
             when (uiState) {
-                is UiState.Loading -> {}
-                is UiState.Success -> {
-                    adapter.clear()
-                    adapter.addAll(uiState.data)
+                is UiState.Loading -> {
+                    binding.progressBar.show()
                 }
 
-                is UiState.Error -> {}
+                is UiState.Success -> {
+                    binding.progressBar.hide()
+                    userAdapter.updateList(uiState.data)
+                }
+
+                is UiState.Error -> {
+                    binding.progressBar.hide()
+                }
             }
         }
     }
 
-    // TODO (2 points): Convert to extenstion function.
 }

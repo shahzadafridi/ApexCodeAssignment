@@ -11,8 +11,6 @@ import com.apex.codeassesment.util.ex.load
 import com.apex.codeassesment.util.ex.navigate
 import com.apex.codeassesment.util.ex.parcelable
 
-// TODO (3 points): Convert to Kotlin
-// TODO (3 points): Remove bugs or crashes if any
 // TODO (1 point): Add content description to images
 // TODO (2 points): Add tests
 class DetailsActivity : AppCompatActivity() {
@@ -24,7 +22,6 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         val userObj: User? = parcelable("saved-user-key",true)
 
-        // TODO (1 point): Use Glide to load images
         userObj?.let { user ->
             binding.detailsImage.load(user.picture.large)
             binding.detailsName.text = getString(R.string.details_name, user.name.first, user.name.last)

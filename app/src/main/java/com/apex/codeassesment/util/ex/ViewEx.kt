@@ -1,6 +1,7 @@
 package com.apex.codeassesment.util.ex
 
 import android.graphics.drawable.Drawable
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.apex.codeassesment.R
@@ -46,4 +47,13 @@ fun ImageView.load(
         .listener(listener)
     if (circular) { request.circleCrop() }
     request.into(this)
+}
+
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.INVISIBLE
 }

@@ -4,10 +4,7 @@ import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
 import com.google.gson.Gson
 import javax.inject.Inject
 
-// TODO (3 points): Convert to Kotlin
 // TODO (2 point): Add tests
-// TODO (1 point): Use the correct naming conventions.
-// TODO (3 points): Inject all dependencies instead of instantiating them.
 class LocalDataSource @Inject constructor(
     private val preferencesManager: PreferencesManager,
     private val gson: Gson
