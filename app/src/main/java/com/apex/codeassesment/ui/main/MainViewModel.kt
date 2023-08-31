@@ -1,5 +1,6 @@
 package com.apex.codeassesment.ui.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.apex.codeassesment.data.repository.UserRepository
 import com.apex.codeassesment.model.user.User
 import com.apex.codeassesment.util.DataState
 import com.apex.codeassesment.util.UiState
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -1,17 +1,19 @@
 package com.apex.codeassesment.util.error
 
+import android.util.Log
 import com.apex.codeassesment.R
 import com.apex.codeassesment.util.DataState
 import com.apex.codeassesment.util.resource.ResourceManager
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class HttpExceptionHandler(
+class HttpExceptionHandler @Inject constructor(
     private val resourceManager: ResourceManager
 ) {
     suspend fun <T> wrap(block: suspend () -> T): DataState<T> {
         return try {
-            val data = block()
+            val data = block.invoke()
             DataState.Success(data)
         } catch (e: Throwable) {
             DataState.Error(transformException(e))

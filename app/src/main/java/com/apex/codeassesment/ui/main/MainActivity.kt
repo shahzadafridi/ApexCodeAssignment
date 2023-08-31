@@ -15,6 +15,7 @@ import com.apex.codeassesment.util.ex.hide
 import com.apex.codeassesment.util.ex.load
 import com.apex.codeassesment.util.ex.navigate
 import com.apex.codeassesment.util.ex.show
+import com.apex.codeassesment.util.ex.toast
 import javax.inject.Inject
 
 // TODO (3 points): Add tests for viewmodel or presenter.
@@ -70,12 +71,13 @@ class MainActivity : AppCompatActivity() {
             viewModel.getUser(true)
         }
 
-        binding.mainUserList.setOnClickListener {
+        binding.mainUserListButton.setOnClickListener {
             viewModel.getUsers()
         }
+        observe()
     }
 
-    fun observe() {
+    private fun observe() {
         viewModel.user.observe(this) { uiState ->
             when (uiState) {
                 is UiState.Loading -> {
@@ -93,6 +95,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 is UiState.Error -> {
+                    toast(uiState.message ?: getString(R.string.undefined_error_message))
                     binding.progressBar.hide()
                 }
             }
@@ -109,6 +112,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 is UiState.Error -> {
+                    toast(uiState.message ?: getString(R.string.undefined_error_message))
                     binding.progressBar.hide()
                 }
             }

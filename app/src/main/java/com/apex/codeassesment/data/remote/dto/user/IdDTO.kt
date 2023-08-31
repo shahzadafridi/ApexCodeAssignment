@@ -7,5 +7,5 @@ data class IdDTO(
     @SerializedName("name")
     val name: String,
     @SerializedName("value")
-    val value: Any
+    val value: Any?
 )

@@ -33,7 +33,7 @@ class DetailsActivity : AppCompatActivity() {
                 coordinates.latitude,
                 coordinates.longitude
             )
-            binding.detailsLocationButton.setOnClickListener { x: View? ->
+            binding.detailsLocationButton.setOnClickListener { _: View? ->
                 navigate<LocationActivity>(
                     bundle = Bundle().apply {
                         putString("user-latitude-key", coordinates.latitude)

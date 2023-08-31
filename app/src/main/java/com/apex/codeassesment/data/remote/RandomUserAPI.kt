@@ -6,10 +6,10 @@ import retrofit2.http.Query
 
 interface RandomUserAPI {
 
-    @GET
+    @GET("/api")
     suspend fun getRandomUser(): UserResponseDTO
 
-    @GET
+    @GET("/api")
     suspend fun getRandomUsers(
         @Query("results") result: Int
     ): UserResponseDTO
