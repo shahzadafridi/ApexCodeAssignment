@@ -4,7 +4,6 @@ import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
 import com.google.gson.Gson
 import javax.inject.Inject
 
-// TODO (2 point): Add tests
 class LocalDataSource @Inject constructor(
     private val preferencesManager: PreferencesManager,
     private val gson: Gson

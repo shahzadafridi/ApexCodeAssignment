@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import com.apex.codeassesment.ui.main.MainActivity
 import javax.inject.Inject
 
-// TODO (2 point): Add tests
 class PreferencesManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
   fun saveUser(user: String) {

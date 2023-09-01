@@ -17,12 +17,6 @@ import org.mockito.ArgumentMatchers.anyString
 
 class LocalDataSourceTest {
 
-    @get: Rule
-    var coroutinesRule = MainCoroutineRule()
-
-    @get: Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
-
     lateinit var localDataSource: LocalDataSource
 
     @MockK
