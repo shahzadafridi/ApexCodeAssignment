@@ -7,7 +7,6 @@ import com.apex.codeassesment.data.repository.UserRepository
 import com.apex.codeassesment.util.DataState
 import javax.inject.Inject
 
-// TODO (2 points) : Add tests
 class UserRepositoryImp @Inject constructor(
   private val localDataSource: LocalDataSource,
   private val remoteDataSource: RemoteDataSource
