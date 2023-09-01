@@ -10,6 +10,7 @@ import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
 import com.apex.codeassesment.data.repository.UserRepository
 import com.apex.codeassesment.util.DataState
 import com.apex.codeassesment.util.error.BaseException
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
@@ -39,8 +40,7 @@ class UserRepositoryImpTest {
 
     @Before
     fun setup(){
-        localDataSource = mockk()
-        remoteDataSource = mockk()
+        MockKAnnotations.init(this)
         userRepository = UserRepositoryImp(localDataSource,remoteDataSource)
     }
 

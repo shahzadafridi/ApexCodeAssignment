@@ -9,13 +9,12 @@ import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
 import com.apex.codeassesment.util.DataState
 import com.apex.codeassesment.util.error.BaseException
 import com.apex.codeassesment.util.error.HttpExceptionHandler
+import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coInvoke
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.verify
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -41,8 +40,7 @@ class RemoteDataSourceTest {
 
     @Before
     fun setup(){
-        randomUserAPI = mockk()
-        exceptionHandler = mockk()
+        MockKAnnotations.init(this)
         remoteDataSource = RemoteDataSource(randomUserAPI,exceptionHandler)
     }
 
