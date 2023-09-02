@@ -1,15 +1,14 @@
 package com.apex.codeassesment
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.apex.codeassesment.data.local.LocalDataSource
 import com.apex.codeassesment.data.local.PreferencesManager
 import com.apex.codeassesment.data.remote.dto.user.UserResponseDTO
 import com.google.gson.Gson
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,16 +35,16 @@ class LocalDataSourceTest {
     fun test_save_user_to_local_source()  {
         val userResponseDTO = mockk<UserResponseDTO>()
 
-        coEvery { preferencesManager.saveUser(anyString()) } returns Unit
+        every { preferencesManager.saveUser(anyString()) } returns Unit
 
-        coEvery { gson.toJson(userResponseDTO) } returns FakeData.userResponseJson
+        every { gson.toJson(userResponseDTO) } returns FakeData.userResponseJson
 
-        coEvery { preferencesManager.saveUser(FakeData.userResponseJson) } returns Unit
+        every { preferencesManager.saveUser(FakeData.userResponseJson) } returns Unit
 
         localDataSource.saveUser(userResponseDTO)
 
-        coVerify { gson.toJson(userResponseDTO) }
-        coVerify { preferencesManager.saveUser(FakeData.userResponseJson) }
+        verify { gson.toJson(userResponseDTO) }
+        verify { preferencesManager.saveUser(FakeData.userResponseJson) }
 
     }
 
@@ -54,13 +53,13 @@ class LocalDataSourceTest {
 
         val userResponseDto = FakeData.userResponseDTO
 
-        coEvery { preferencesManager.loadUser() } returns FakeData.userResponseJson
-        coEvery { gson.fromJson(FakeData.userResponseJson, UserResponseDTO::class.java) } returns userResponseDto
+        every { preferencesManager.loadUser() } returns FakeData.userResponseJson
+        every { gson.fromJson(FakeData.userResponseJson, UserResponseDTO::class.java) } returns userResponseDto
 
         val result = localDataSource.loadUser()
 
-        coVerify { preferencesManager.loadUser() }
-        coVerify { gson.fromJson(FakeData.userResponseJson, UserResponseDTO::class.java) }
+        verify { preferencesManager.loadUser() }
+        verify { gson.fromJson(FakeData.userResponseJson, UserResponseDTO::class.java) }
         assert(result == userResponseDto)
     }
 

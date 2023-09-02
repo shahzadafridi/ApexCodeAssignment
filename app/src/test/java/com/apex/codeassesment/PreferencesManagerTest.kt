@@ -3,10 +3,10 @@ package com.apex.codeassesment
 import android.content.SharedPreferences
 import com.apex.codeassesment.data.local.PreferencesManager
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -29,13 +29,13 @@ class PreferencesManagerTest {
         val value = FakeData.userResponseJson
 
         val editor = mockk<SharedPreferences.Editor>(relaxed = true)
-        coEvery { sharedPreferences.edit() } returns editor
-        coEvery { editor.putString(key, value) } returns editor
-        coEvery { editor.apply() } returns Unit
+        every { sharedPreferences.edit() } returns editor
+        every { editor.putString(key, value) } returns editor
+        every { editor.apply() } returns Unit
 
         preferencesManager.saveUser(value)
 
-        coVerify {
+        verify {
             editor.putString(key, value)
             editor.apply()
         }
@@ -46,7 +46,7 @@ class PreferencesManagerTest {
         val key = "saved-user"
         val expected = FakeData.userResponseJson
 
-        coEvery { sharedPreferences.getString(key,null) } returns expected
+        every { sharedPreferences.getString(key,null) } returns expected
 
         val result = preferencesManager.loadUser()
 
@@ -59,13 +59,13 @@ class PreferencesManagerTest {
         val expected = FakeData.userResponseJson
 
         val editor = mockk<SharedPreferences.Editor>(relaxed = true)
-        coEvery { sharedPreferences.getString(key,null) } returns expected
-        coEvery { sharedPreferences.edit() } returns editor
-        coEvery { editor.putString(key, expected) } returns editor
-        coEvery { editor.apply() } returns Unit
+        every { sharedPreferences.getString(key,null) } returns expected
+        every { sharedPreferences.edit() } returns editor
+        every { editor.putString(key, expected) } returns editor
+        every { editor.apply() } returns Unit
 
         preferencesManager.saveUser(expected)
-        coVerify {
+        verify {
             editor.putString(key, expected)
             editor.apply()
         }
